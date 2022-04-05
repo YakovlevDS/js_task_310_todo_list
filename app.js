@@ -1,4 +1,3 @@
-//selecting dom elements for manipulation
 let input = document.querySelector("input[type = 'text']");
 let ul = document.querySelector("ul");
 let container = document.querySelector("div");
@@ -19,19 +18,21 @@ deleteTodo = () => {
         })
     }
 }
+
 loadTodo = () => {
     if (localStorage.getItem('todoList')) {
         ul.innerHTML = localStorage.getItem('todoList');
         deleteTodo();
     }
 }
-saveTodo = () => localStorage.setItem('todoList', ul.innerHTML)
 
+saveTodo = () => localStorage.setItem('todoList', ul.innerHTML)
 
 clearTodo = e => {
     ul.innerHTML = "";
     localStorage.removeItem('todoList', ul.innerHTML);
 }
+
 closeTips = () => overlay.style.height = "0";
 
 showInputField = () => input.classList.toggle('display');
@@ -42,38 +43,25 @@ checkTodo = e =>
     e.target.tagName === 'LI' ?
     e.target.classList.toggle('checked') : null
 
-
-// addTodo 
-
-input.addEventListener("keypress", function(keyPressed) {
-    console.log(keyPressed);
-    console.log(this);
-
-    if (keyPressed.which === 13) {
+addTodo = e => {
+    if (e.which === 13) {
         let li = document.createElement("li");
         let spanElement = document.createElement("span");
         let icon = document.createElement("i");
-        let newTodo = this.value;
-        this.value = " ";
-
+        let newTodo = input.value;
+        input.value = "";
         icon.classList.add('fas', 'fa-trash-alt');
         spanElement.append(icon);
         ul.appendChild(li).append(spanElement, newTodo);
-
         deleteTodo();
-
     }
+}
 
-});
+deleteTodo();
+loadTodo();
+input.addEventListener("keypress", e => addTodo(e));
 
-
-
-
-
-
-
-
-ul.addEventListener('click', (e) => checkTodo(e));
+ul.addEventListener('click', e => checkTodo(e));
 
 pencil.addEventListener('click', showInputField);
 
@@ -84,6 +72,3 @@ clearBtn.addEventListener('click', e => clearTodo(e));
 tipsBtn.addEventListener('click', showTips);
 
 closeBtn.addEventListener('click', e => closeTips(e));
-
-deleteTodo();
-loadTodo();
